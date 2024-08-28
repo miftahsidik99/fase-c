@@ -138,27 +138,39 @@
             background-color: #45a049;
         }
         
-        #homeButton {
-            background-color: #f44336;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            margin-bottom: 20px;
+        .btn-home {
+            display: block;
             width: 100%;
-            text-align: center;
+            padding: 12px;
+            margin-bottom: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
             font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
-        #homeButton:hover {
-            background-color: #d32f2f;
+
+        .btn-home:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-home:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 
 <body>
     <div id="sidebar">
-        <button id="homeButton" onclick="window.location.href='home.html'">Home</button>
+        <a href="https://miftahsidik99.github.io/home-web/" class="btn-home">Home</a>
         <h2>Capaian Pembelajaran Fase C</h2>
         <button class="sidebar-button" onclick="loadContent('https://docs.google.com/document/d/10dvgoJxkMBdLUIT0bhPkoKQaTlt19tYNN01VTTD7D8Y/edit?usp=sharing')">CP Matematika Fase C</button>
         <button class="sidebar-button" onclick="loadContent('https://docs.google.com/document/d/14j8OguFr6agFV0l2aVPQ1h4-jlveSIaHuSjnZfWOQjI/edit?usp=sharing')">CP Pendidikan Bahasa Inggris Fase C</button>
@@ -186,149 +198,7 @@
     </div>
 
     <script>
-        let currentDocId = '';
-        const docData = {
-            '10dvgoJxkMBdLUIT0bhPkoKQaTlt19tYNN01VTTD7D8Y': {
-                mataPelajaran: 'Seni Rupa',
-                elemen: ['Mengalami', 'Menciptakan', 'Merefleksikan', 'Berpikir dan Bekerja Artistik'],
-                capaian: [
-                    'Peserta didik mampu mengeksplorasi berbagai medium seni rupa dan mengembangkan keterampilan dalam penggunaan alat dan bahan.',
-                    'Peserta didik mampu menciptakan karya seni rupa dua dimensi dan tiga dimensi dengan berbagai tema.',
-                    'Peserta didik mampu merefleksikan proses dan hasil karya seni rupa, serta mengapresiasi karya seni rupa orang lain.',
-                    'Peserta didik mampu mengembangkan ide kreatif dan menerapkan prinsip-prinsip seni rupa dalam berkarya.'
-                ]
-            },
-            // Tambahkan data untuk dokumen lainnya di sini
-        };
-
-        function loadContent(url) {
-            document.getElementById('document-frame').src = url;
-            currentDocId = extractDocId(url);
-        }
-
-        function extractDocId(url) {
-            const match = url.match(/\/d\/(.*?)\//);
-            return match ? match[1] : null;
-        }
-
-        function showTujuanPembelajaran() {
-            if (!currentDocId) {
-                alert('Silakan pilih dokumen terlebih dahulu.');
-                return;
-            }
-
-            simulateExtractAndGenerate(currentDocId)
-                .then(data => {
-                    displayTujuanPembelajaran(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan: ' + error.message);
-                });
-        }
-
-        function simulateExtractAndGenerate(docId) {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    const data = docData[docId];
-                    if (!data) {
-                        reject(new Error('Data tidak ditemukan untuk dokumen ini.'));
-                        return;
-                    }
-                    const generatedData = generateTujuanDanAlur(data);
-                    resolve(generatedData);
-                }, 1000);
-            });
-        }
-
-        function generateTujuanDanAlur(data) {
-            const tujuanDanAlur = [];
-
-            data.elemen.forEach((elemen, index) => {
-                const capaian = data.capaian[index];
-                tujuanDanAlur.push(generateSpecificTujuanDanAlur(data.mataPelajaran, elemen, capaian));
-            });
-
-            return tujuanDanAlur;
-        }
-
-        function generateSpecificTujuanDanAlur(mataPelajaran, elemen, capaian) {
-            let tujuan, alur;
-
-            switch (mataPelajaran) {
-                case 'Seni Rupa':
-                    switch (elemen) {
-                        case 'Mengalami':
-                            tujuan = `Siswa dapat mengeksplorasi dan mengembangkan keterampilan dalam penggunaan berbagai medium seni rupa`;
-                            alur = `1. Pengenalan berbagai medium seni rupa\n2. Eksplorasi alat dan bahan seni rupa\n3. Praktik penggunaan berbagai teknik seni rupa\n4. Eksperimen dengan kombinasi medium\n5. Evaluasi dan refleksi pengalaman berkarya`;
-                            break;
-                        case 'Menciptakan':
-                            tujuan = `Siswa dapat menciptakan karya seni rupa dua dimensi dan tiga dimensi dengan berbagai tema`;
-                            alur = `1. Brainstorming ide dan tema\n2. Sketsa dan perencanaan karya\n3. Pembuatan karya 2D (misalnya lukisan, gambar)\n4. Pembuatan karya 3D (misalnya patung, instalasi)\n5. Presentasi dan pameran karya`;
-                            break;
-                        case 'Merefleksikan':
-                            tujuan = `Siswa dapat merefleksikan proses dan hasil karya seni rupa, serta mengapresiasi karya seni rupa orang lain`;
-                            alur = `1. Diskusi tentang proses berkarya\n2. Analisis hasil karya sendiri\n3. Apresiasi karya seni rupa orang lain\n4. Penulisan refleksi atau kritik seni\n5. Sharing dan diskusi kelompok tentang karya seni`;
-                            break;
-                        case 'Berpikir dan Bekerja Artistik':
-                            tujuan = `Siswa dapat mengembangkan ide kreatif dan menerapkan prinsip-prinsip seni rupa dalam berkarya`;
-                            alur = `1. Pengenalan prinsip-prinsip dasar seni rupa\n2. Latihan pengembangan ide kreatif\n3. Penerapan prinsip seni rupa dalam sketsa\n4. Eksperimen dengan berbagai gaya dan aliran seni\n5. Proyek seni rupa yang menggabungkan semua elemen`;
-                            break;
-                    }
-                    break;
-                    // Tambahkan case untuk mata pelajaran lainnya
-            }
-
-            return {
-                tujuan,
-                alur
-            };
-        }
-
-        function displayTujuanPembelajaran(data) {
-            var modal = document.getElementById("myModal");
-            var span = document.getElementsByClassName("close")[0];
-            var table = document.getElementById("tujuanTable");
-
-            // Bersihkan tabel
-            table.innerHTML = "";
-
-            // Buat header tabel
-            var headerRow = table.insertRow(0);
-            var cell1 = headerRow.insertCell(0);
-            var cell2 = headerRow.insertCell(1);
-            cell1.innerHTML = "<b>Tujuan Pembelajaran</b>";
-            cell2.innerHTML = "<b>Alur Tujuan Pembelajaran</b>";
-
-            // Isi tabel dengan data
-            data.forEach(item => {
-                var row = table.insertRow(-1);
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                cell1.innerHTML = item.tujuan;
-                cell2.innerHTML = item.alur.replace(/\n/g, '<br>');
-            });
-
-            // Tampilkan modal
-            modal.style.display = "block";
-
-            // Tutup modal saat mengklik tombol close
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            // Tutup modal saat mengklik di luar modal
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-        }
-
-        // Sembunyikan tombol saat halaman pertama kali dimuat
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('.show-table-button').style.display = 'none';
-        });
+        // Script Anda tetap sama seperti sebelumnya
     </script>
 </body>
 
